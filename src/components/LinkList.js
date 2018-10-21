@@ -13,7 +13,7 @@ class LinkList extends React.Component {
             if (error) return <p>Error! {error}</p>
 
             const linksToRender = data.feed.links
-            return linksToRender.map(link => <Link key={link.id} link={link} />)
+            return linksToRender.map((link, index) => <Link key={link.id} link={link} index={index} />)
           }
         }
       </Query>

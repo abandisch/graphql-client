@@ -1,13 +1,39 @@
 import React from 'react'
+import { getAuthToken, timeDifferenceForDate } from '../lib/utils'
 
-const Link = ({ link }) => {
-  return (
-    <div>
-      <div>
-        <p>{link.description} ({link.url})</p>
+class Link extends React.Component {
+  _voteForLink () {
+
+  }
+
+  render () {
+    const authToken = getAuthToken()
+
+    return (
+      <div className='flex mt2 items-start'>
+        <div className='flex items-center'>
+          <span className='gray'>{this.props.index + 1}.</span>
+          {authToken && (
+            <div className='ml1 gray f11' onClick={() => this._voteForLink()}>
+              ▲
+            </div>
+          )}
+        </div>
+        <div className='ml1'>
+          <div>
+            {this.props.link.description} ({this.props.link.url})
+          </div>
+          <div className='f6 lh-copy gray'>
+            {this.props.link.votes.length} votes | by{' '}
+            {this.props.link.postedBy
+              ? this.props.link.postedBy.name
+              : 'Unknown'}{' '}
+            {timeDifferenceForDate(this.props.link.createdAt)}
+          </div>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 export default Link
