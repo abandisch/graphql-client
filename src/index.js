@@ -8,14 +8,26 @@ import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { setContext } from 'apollo-link-context'
+import { getAuthToken } from './lib/utils'
 import { GRAPHQL_SERVER_URL } from './config'
 
 const httpLink = createHttpLink({
   uri: GRAPHQL_SERVER_URL
 })
 
+const authLink = setContext((_, { headers }) => {
+  const token = getAuthToken()
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : ''
+    }
+  }
+})
+
 const client = new ApolloClient({
-  link: httpLink,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 })
 
