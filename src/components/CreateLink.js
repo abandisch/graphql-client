@@ -1,10 +1,23 @@
 import React from 'react'
 import { Mutation } from 'react-apollo'
 import { POST_MUTATION } from '../lib/graphql/Mutations'
+import { FEED_QUERY } from '../lib/graphql/Queries'
 
 const CreateLinkButton = ({ description, url, onCompleted }) => {
   return (
-    <Mutation mutation={POST_MUTATION} variables={{ description, url }} onCompleted={onCompleted}>
+    <Mutation
+      mutation={POST_MUTATION}
+      variables={{ description, url }}
+      onCompleted={onCompleted}
+      update={(store, { data: { post } }) => {
+        const data = store.readQuery({ query: FEED_QUERY })
+        data.feed.links.unshift(post)
+        store.writeQuery({
+          query: FEED_QUERY,
+          data
+        })
+      }}
+    >
       {
         (postMutation, { loading, error, data }) => {
           if (loading) return <button type='button'>Please wait</button>
