@@ -1,5 +1,5 @@
 import React from 'react'
-import { setAuthToken } from '../config' /* getAuthToken, */
+import { setAuthToken } from '../lib/utils'
 
 class Login extends React.Component {
   constructor (props) {
