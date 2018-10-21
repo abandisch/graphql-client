@@ -1,4 +1,26 @@
 import React from 'react'
+import { Mutation } from 'react-apollo'
+import { POST_MUTATION } from '../lib/graphql/Mutations'
+
+const CreateLinkButton = ({ description, url }) => {
+  return (
+    <Mutation mutation={POST_MUTATION} variables={{ description, url }}>
+      {
+        (postMutation, { loading, error, data }) => {
+          if (loading) return <button type='button'>Please wait</button>
+          return (
+            <React.Fragment>
+              {
+                error && <p>{error.message}</p>
+              }
+              <button onClick={postMutation}>Submit</button>
+            </React.Fragment>
+          )
+        }
+      }
+    </Mutation>
+  )
+}
 
 class CreateLink extends React.Component {
   constructor (props) {
@@ -28,7 +50,7 @@ class CreateLink extends React.Component {
             onChange={(e) => this.setState({ url: e.target.value })}
             placeholder='The URL for the link'
           />
-          <button onClick={`... you'll implement this 🔜`}>Submit</button>
+          <CreateLinkButton description={description} url={url} />
         </div>
       </div>
     )
