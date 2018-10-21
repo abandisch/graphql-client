@@ -1,7 +1,7 @@
 import React from 'react'
 import { Query } from 'react-apollo'
 import Link from './Link'
-import { FEED_QUERY } from '../lib/graphql-queries'
+import { FEED_QUERY } from '../lib/graphql/Queries'
 
 class LinkList extends React.Component {
   render () {
