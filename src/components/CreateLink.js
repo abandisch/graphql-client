@@ -2,9 +2,9 @@ import React from 'react'
 import { Mutation } from 'react-apollo'
 import { POST_MUTATION } from '../lib/graphql/Mutations'
 
-const CreateLinkButton = ({ description, url }) => {
+const CreateLinkButton = ({ description, url, onCompleted }) => {
   return (
-    <Mutation mutation={POST_MUTATION} variables={{ description, url }}>
+    <Mutation mutation={POST_MUTATION} variables={{ description, url }} onCompleted={onCompleted}>
       {
         (postMutation, { loading, error, data }) => {
           if (loading) return <button type='button'>Please wait</button>
@@ -50,7 +50,11 @@ class CreateLink extends React.Component {
             onChange={(e) => this.setState({ url: e.target.value })}
             placeholder='The URL for the link'
           />
-          <CreateLinkButton description={description} url={url} />
+          <CreateLinkButton
+            description={description}
+            url={url}
+            onCompleted={() => this.props.history.push('/')}
+          />
         </div>
       </div>
     )
