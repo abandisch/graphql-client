@@ -1,11 +1,9 @@
 import React from 'react'
+import { Mutation } from 'react-apollo'
 import { getAuthToken, timeDifferenceForDate } from '../lib/utils'
+import { VOTE_MUTATION } from '../lib/graphql/Mutations'
 
 class Link extends React.Component {
-  _voteForLink () {
-
-  }
-
   render () {
     const authToken = getAuthToken()
 
@@ -14,9 +12,15 @@ class Link extends React.Component {
         <div className='flex items-center'>
           <span className='gray'>{this.props.index + 1}.</span>
           {authToken && (
-            <div className='ml1 gray f11' onClick={() => this._voteForLink()}>
-              ▲
-            </div>
+            <Mutation mutation={VOTE_MUTATION} variables={{ linkId: this.props.link.id }}>
+              {
+                (voteMutation) => (
+                  <div className='ml1 gray f11' onClick={voteMutation}>
+                    ▲
+                  </div>
+                )
+              }
+            </Mutation>
           )}
         </div>
         <div className='ml1'>
