@@ -1,5 +1,21 @@
 import React from 'react'
+import { Mutation } from 'react-apollo'
+import { LOGIN_MUTATION, SIGNUP_MUTATION } from '../lib/graphql/Mutations'
 import { setAuthToken } from '../lib/utils'
+
+const LoginButton = ({ mutation, variables, onCompleted, btnText }) => {
+  return (
+    <Mutation mutation={mutation} variables={variables} onCompleted={onCompleted}>
+      {
+        (mutation) => (
+          <button type='button' className='pointer mr2 button' onClick={() => this._confirm()}>
+            {btnText}
+          </button>
+        )
+      }
+    </Mutation>
+  )
+}
 
 class Login extends React.Component {
   constructor (props) {
@@ -49,17 +65,17 @@ class Login extends React.Component {
           />
         </div>
         <div className='flex mt3'>
-          <div className='pointer mr2 button' onClick={() => this._confirm()}>
-            {login ? 'login' : 'create account'}
-          </div>
-          <div
-            className='pointer button'
-            onClick={() => this.setState({ login: !login })}
-          >
+          <LoginButton
+            mutation={login ? LOGIN_MUTATION : SIGNUP_MUTATION}
+            variables={{ email, password, name }}
+            onCompleted={data => this._confirm(data)}
+            btnText={login ? 'login' : 'create account'}
+          />
+          <button type='button' className='pointer button' onClick={() => this.setState({ login: !login })}>
             {login
               ? 'need to create an account?'
               : 'already have an account?'}
-          </div>
+          </button>
         </div>
       </div>
     )
