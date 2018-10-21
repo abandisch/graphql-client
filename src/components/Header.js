@@ -23,7 +23,7 @@ class Header extends React.Component {
         </div>
         <div className='flex flex-fixed'>
           {authToken ? (
-            <div
+            <button
               className='ml1 pointer black'
               onClick={() => {
                 setAuthToken('')
@@ -31,7 +31,7 @@ class Header extends React.Component {
               }}
             >
             logout
-            </div>
+            </button>
           ) : (
             <Link to='/login' className='ml1 no-underline black'>
               login

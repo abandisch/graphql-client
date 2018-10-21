@@ -8,5 +8,5 @@ export const saveToSession = (key, item) => {
 }
 
 export const loadFromSession = key => {
-  window.sessionStorage.getItem(key)
+  return window.sessionStorage.getItem(key)
 }

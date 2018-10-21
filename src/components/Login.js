@@ -7,11 +7,24 @@ const LoginButton = ({ mutation, variables, onCompleted, btnText }) => {
   return (
     <Mutation mutation={mutation} variables={variables} onCompleted={onCompleted}>
       {
-        (mutation) => (
-          <button type='button' className='pointer mr2 button' onClick={() => this._confirm()}>
-            {btnText}
-          </button>
-        )
+        (mutation, { loading, error }) => {
+          const props = {
+            disabled: false,
+            text: loading ? 'Loading ...' : btnText
+          }
+          if (loading) props.disabled = true
+
+          return (
+            <React.Fragment>
+              {
+                error && <span>{error.message}</span>
+              }
+              <button disabled={props.disabled} type='button' className='pointer mr2 button' onClick={mutation}>
+                {props.text}
+              </button>
+            </React.Fragment>
+          )
+        }
       }
     </Mutation>
   )
@@ -27,10 +40,14 @@ class Login extends React.Component {
       password: '',
       name: ''
     }
+
+    this._confirm = this._confirm.bind(this)
   }
 
-  async _confirm () {
-    // ... you'll implement this 🔜
+  async _confirm (data) {
+    const { token } = this.state.login ? data.login : data.signup
+    this._saveUserData(token)
+    this.props.history.push('/')
   }
 
   _saveUserData (token) {
